@@ -1,3 +1,4 @@
+using API.Middleware;
 using core.Interfaces;
 using infrastructure.Data;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,11 +16,14 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddCors();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins
+    ("http://localhost:4200", "https://localhost:4200"));
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 
