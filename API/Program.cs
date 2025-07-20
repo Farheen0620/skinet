@@ -7,6 +7,16 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var pfxPath = Path.Combine(builder.Environment.ContentRootPath, "certs", "localhost.pfx");
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000);
+    options.ListenAnyIP(5001,
+    listenOptions =>
+    {
+        listenOptions.UseHttps(pfxPath,"changeit");
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(opt =>
