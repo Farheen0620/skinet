@@ -11,4 +11,6 @@
   ));
 }
 
-
+.match-height-input{
+  height: var(--mat-form-field-container-height) !important;
+}
