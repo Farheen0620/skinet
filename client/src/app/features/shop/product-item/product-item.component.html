@@ -7,7 +7,8 @@
         <p class="font-light">{{product.price | currency}}</p>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-stroked-button class="w-full">
+        <button mat-stroked-button class="w-full" (click)="cartService.addItemToCart(product)"> <!--setion13
+            to give functionality to the add to cart button in shop page-->
             <mat-icon>add_shopping_cart</mat-icon>
             Add to Cart
         </button>
