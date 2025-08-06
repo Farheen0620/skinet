@@ -1,16 +1,17 @@
 using System;
 using core.Entity;
 using infrastructure.config;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace infrastructure.Data;
 
-public class StoreContext(DbContextOptions options) : DbContext(options)
+public class StoreContext(DbContextOptions options) : IdentityDbContext<AppUser>(options) //setion 14
 {
     public DbSet<Product> Products { get; set; }
 
-
+    public DbSet<Address> Address { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

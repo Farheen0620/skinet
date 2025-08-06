@@ -1,4 +1,5 @@
 using API.Middleware;
+using core.Entity;
 using core.Interfaces;
 using infrastructure.Data;
 using infrastructure.Services;
@@ -37,16 +38,22 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
     return ConnectionMultiplexer.Connect(configuration);
 });
 
-builder.Services.AddSingleton<ICartService, CartService>();  
+builder.Services.AddSingleton<ICartService, CartService>();
+
+builder.Services.AddAuthorization(); 
+builder.Services.AddIdentityApiEndpoints<AppUser>().
+    AddEntityFrameworkStores<StoreContext>(); 
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins
     ("http://localhost:4200", "https://localhost:4200"));
+    //allow credentials is added inorder to allow client to send cookies
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
+app.MapGroup("api").MapIdentityApi<AppUser>(); //setion 14 mapgroup() is used to get http rqst as api/login
 
 try
 {
