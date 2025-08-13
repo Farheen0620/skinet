@@ -71,8 +71,7 @@ public class AccountController(SignInManager<AppUser> signInManager) : BaseApiCo
         });
     }
 
-    [HttpGet]
-
+    [HttpGet("auth-status")]
     public ActionResult GetAuthState()
     {
         return Ok(new { IsAuthenticated = User.Identity?.IsAuthenticated ?? false });
@@ -80,7 +79,6 @@ public class AccountController(SignInManager<AppUser> signInManager) : BaseApiCo
 
     [Authorize]
     [HttpPost("address")]
-
     public async Task<ActionResult<Address>> CreateorUpdateAddress(AddressDto addressDto)
     {
         var user = await signInManager.UserManager.GetUserByEmailWithAddress(User);

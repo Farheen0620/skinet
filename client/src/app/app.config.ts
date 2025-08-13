@@ -9,6 +9,7 @@ import { loadingInterceptor } from './core/interceptor/loading-interceptor';
 import { InitService } from './core/services/init.service';
 import { lastValueFrom } from 'rxjs';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { authInterceptor } from './core/interceptor/auth-interceptor';
 
 
 
@@ -17,7 +18,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([errorInterceptor, loadingInterceptor])),
+    provideHttpClient(withInterceptors([
+      errorInterceptor, 
+      loadingInterceptor,
+      authInterceptor 
+    ])),
     provideAppInitializer( async () => { //section 13 used to load cart data before loading app
       const initService = inject(InitService);
       return lastValueFrom(initService.init()).finally(() => { // take lastupdated data from cart finally() is 
